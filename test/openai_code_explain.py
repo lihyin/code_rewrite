@@ -1,7 +1,7 @@
 # reference: https://beta.openai.com/examples/default-explain-code
 
 import os
-import openai
+import test.openai as openai
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 print(openai.api_key)
