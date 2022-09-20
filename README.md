@@ -1,5 +1,5 @@
 # Introduction
-This repository implements the code shorter description API by using OpenAI API (with its open accessible GPT-3 models), AWS Lambda, AWS API Gateway, and Python. The API could be improved by switching to use OpenAI Codex model once the Codex model access is approved.
+This repository implements the code short description API by using OpenAI API (with its open accessible GPT-3 models), AWS Lambda, AWS API Gateway, and Python. The API could be improved by switching to use OpenAI Codex model once the Codex model access is approved.
 
 # How to use the API
 * API Endpoint: https://r4ph71epe1.execute-api.us-east-1.amazonaws.com/dev
