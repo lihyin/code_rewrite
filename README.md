@@ -6,7 +6,9 @@ This repository implements the NLP API by using OpenAI API (with its open access
   - from iterative to recursive
 
 # How to use the API
-## API Endpoint: https://xrhv8qvx7h.execute-api.us-east-1.amazonaws.com/dev/generate
+## Generate Code 
+  ### Endpoint: 
+https://xrhv8qvx7h.execute-api.us-east-1.amazonaws.com/dev/generate
   ### Method: POST
   ### Content Example:
 ```json
@@ -30,7 +32,10 @@ def multiply(a, b):
     return a*b
 ```
 
-## API Endpoint: https://xrhv8qvx7h.execute-api.us-east-1.amazonaws.com/dev/rewrite
+## Rewrite Code
+  ### Endpoint: 
+https://xrhv8qvx7h.execute-api.us-east-1.amazonaws.com/dev/rewrite
+
   ### Method: POST
   ### Content Example:
 ```json
