@@ -1,5 +1,5 @@
 # Introduction
-This repository implements the code short description API by using OpenAI API (with its open accessible GPT-3 models), AWS Lambda, AWS API Gateway, and Python. The API could be improved by switching to use OpenAI Codex model once the Codex model access is approved.
+This repository implements the API of generating code from docstring document by using OpenAI API (with its open accessible GPT-3 models), AWS Lambda, AWS API Gateway, and Python. The API could be improved by switching to use OpenAI Codex model once the Codex model access is approved.
 
 # How to use the API
 * API Endpoint: https://r4ph71epe1.execute-api.us-east-1.amazonaws.com/dev
@@ -29,63 +29,48 @@ response:
 1. In Lambda Function, Add Layer `AWSDataWrangler-Python39` 
 2. When packaging Python zip, first delete numpy folder in .venv/lib/python3.9/site-packages
 
-# OpenAI Prompt Engineering
+
+# OpenAI Prompt Engineering: generate code from docstring
 
 ## OpenAI Playground
-Play the following code short description generation prompt engineering text in [OpenAI Playground](https://beta.openai.com/playground)
+Play the following code rewrite prompt engineering text in [OpenAI Playground](https://beta.openai.com/playground) for [iterative to recursive example](https://analyticsindiamag.com/ultimate-guide-to-recursion-and-iteration-in-python/)
 
 ```
-Write the short description of the following code:
-[Code]
-class Solution:
-    def permute(self, nums: List[int]) -> List[List[int]]:
-        def dfs():
-            if len(path) == n:
-                res.append(path[:])
-                return
-            
-            for j in range(n):
-                if nums[j] not in path:
-                    path.append(nums[j])
-                    dfs()
-                    path.pop()
-        
-        n = len(nums)
-        res = []
-        path = []
-        dfs()
+converts a text instruction in Natural Language to Python Code with a suitable docstring in numpy style:
+[Docstring]
+    '''
+    Returns the sum of two decimal numbers in binary digits.
 
-        return res
+            Parameters:
+                    a (int): A decimal integer
+                    b (int): Another decimal integer
 
-[Short Description] Solution class with a recursive function that finds all possible permutations of a given list of numbers.
+            Returns:
+                    binary_sum (str): Binary string of the sum of a and b
+    '''
+[Generated Code with Docstring]
+def add_binary(a, b):
+    '''
+    Returns the sum of two decimal numbers in binary digits.
 
-Write the short description of the following code:
-[Code]
-class LRUCache:
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.cache = OrderedDict()
+            Parameters:
+                    a (int): A decimal integer
+                    b (int): Another decimal integer
 
-    def get(self, key: int) -> int:
-        if key in self.cache:
-            value = self.cache.pop(key)
-            self.cache[key] = value
-            return self.cache[key]
-        else:
-            return -1
+            Returns:
+                    binary_sum (str): Binary string of the sum of a and b
+    '''
+    binary_sum = bin(a+b)[2:]
+    return binary_sum
 
-    def put(self, key: int, value: int) -> None:
-        if key in self.cache:
-            self.cache.pop(key)
-        elif len(self.cache) >= self.capacity:
-            self.cache.popitem(last=False)
-
-        self.cache[key] = value
-
+converts a text instruction in Natural Language to Python Code with a suitable docstring in numpy style:
+[Docstring]
+    """Takes in two numbers, returns their product."""
+[Generated Code with Docstring]
 ```
 
 ## OpenAI Python Code:
-Use the following Python code to implement the code short description generation 
+Use the following Python code to implement the code generation:
 ```python
 import os
 import openai
@@ -94,16 +79,90 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 response = openai.Completion.create(
   model="text-davinci-002",
-  prompt="Write the short description of the following code:\n[Code]\nclass Solution:\n    def permute(self, nums: List[int]) -> List[List[int]]:\n        def dfs():\n            if len(path) == n:\n                res.append(path[:])\n                return\n            \n            for j in range(n):\n                if nums[j] not in path:\n                    path.append(nums[j])\n                    dfs()\n                    path.pop()\n        \n        n = len(nums)\n        res = []\n        path = []\n        dfs()\n\n        return res\n\n[Short Description] Solution class with a recursive function that finds all possible permutations of a given list of numbers.\n\nWrite the short description of the following code:\n[Code]\nclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = OrderedDict()\n\n    def get(self, key: int) -> int:\n        if key in self.cache:\n            value = self.cache.pop(key)\n            self.cache[key] = value\n            return self.cache[key]\n        else:\n            return -1\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.cache:\n            self.cache.pop(key)\n        elif len(self.cache) >= self.capacity:\n            self.cache.popitem(last=False)\n\n        self.cache[key] = value\n",
+  prompt="converts a text instruction in Natural Language to Python Code with a suitable docstring in numpy style:\n[Docstring]\n    '''\n    Returns the sum of two decimal numbers in binary digits.\n\n            Parameters:\n                    a (int): A decimal integer\n                    b (int): Another decimal integer\n\n            Returns:\n                    binary_sum (str): Binary string of the sum of a and b\n    '''\n[Generated Code with Docstring]\ndef add_binary(a, b):\n    '''\n    Returns the sum of two decimal numbers in binary digits.\n\n            Parameters:\n                    a (int): A decimal integer\n                    b (int): Another decimal integer\n\n            Returns:\n                    binary_sum (str): Binary string of the sum of a and b\n    '''\n    binary_sum = bin(a+b)[2:]\n    return binary_sum\n\nconverts a text instruction in Natural Language to Python Code with a suitable docstring in numpy style:\n[Docstring]\n    \"\"\"Takes in two numbers, returns their product.\"\"\"\n[Generated Code with Docstring]",
   temperature=0,
   max_tokens=256,
   top_p=1,
   frequency_penalty=0,
-  presence_penalty=0,
-  stop=["."]
+  presence_penalty=0
 )
 ```
+# OpenAI Prompt Engineering: code rewrite
+
+## OpenAI Playground
+Play the following code rewrite prompt engineering text in [OpenAI Playground](https://beta.openai.com/playground) for [iterative to recursive example](https://analyticsindiamag.com/ultimate-guide-to-recursion-and-iteration-in-python/)
+
+```
+creating a recursive approach from an iterative approach in python:
+[iterative]
+ n = 10
+ result = 1
+ i = 1
+ while i <= n:
+   result *= i
+   i += 1
+ print(result) 
+
+[recursive]
+ def Factorial(n):
+   # declare a base case (a limiting criteria)
+   if n == 1:
+     return 1
+   # continue with general case
+   else:
+     return n * Factorial(n-1)
+ 
+ print(Factorial(10))
+
+creating a recursive approach from an iterative approach in python:
+[iterative]
+ def Reverse_iter(s):
+   rev = ''
+   for k in s:
+     rev = k + rev
+   return rev
+
+ Reverse_iter('Welcome!')
+
+[recursive]
+```
+
+## OpenAI Python Code:
+Use the following Python code to implement the code rewrite
+```python
+import os
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+response = openai.Completion.create(
+  model="text-davinci-002",
+  prompt="creating a recursive approach from an iterative approach in python:\n[iterative]\n n = 10\n result = 1\n i = 1\n while i <= n:\n   result *= i\n   i += 1\n print(result) \n\n[recursive]\n def Factorial(n):\n   # declare a base case (a limiting criteria)\n   if n == 1:\n     return 1\n   # continue with general case\n   else:\n     return n * Factorial(n-1)\n \n print(Factorial(10))\n\ncreating a recursive approach from an iterative approach in python:\n[iterative]\n def Reverse_iter(s):\n   rev = ''\n   for k in s:\n     rev = k + rev\n   return rev\n\n Reverse_iter('Welcome!')\n\n[recursive]\n",
+  temperature=0,
+  max_tokens=256,
+  top_p=1,
+  frequency_penalty=0,
+  presence_penalty=0
+)
+```
+
+# Test AWS API Gateway
+
+```json
+{
+    "type":"generate",
+    "sub_type":"docstring",
+    "input":"    \"\"\"Takes in two numbers, returns their product.\"\"\"\n"
+}
+```
+
+```json
+{
+    "type":"rewrite",
+    "sub_type":"iterative2recursive",
+    "input":" def Reverse_iter(s):\n   rev = ''\n   for k in s:\n     rev = k + rev\n   return rev\n\n Reverse_iter('Welcome!')"
+}
+```
+
 # TODO
-* Replace the OpenAI API with the Codex model afer getting the access approval (the Codex API access is currently pending for approval)
-* Truncate the returned description to just use the first sentance as needed.
-* Wrap the API and document with AWS API Gateway, Swagger API, etc
+* [Improve the REST API URI](https://youtu.be/9eHh946qTIk?t=687) (https://youtu.be/9eHh946qTIk?t=1213)
