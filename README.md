@@ -6,6 +6,7 @@ This repository implements the NLP API by using OpenAI API (with its open access
   - from iterative to recursive
 
 # How to use the API
+(TODO: provide the API document via swagger)
 ## Generate Code 
   ### Endpoint: 
 https://xrhv8qvx7h.execute-api.us-east-1.amazonaws.com/dev/generate
